@@ -39,4 +39,3 @@ jobs:
               "db-name": "DigitalLibraryTestDB",
               "sa-password": "${{ secrets.SA_PASSWORD }}"
             }
-having doe that whats mextxx
