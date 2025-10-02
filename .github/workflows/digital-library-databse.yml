@@ -1,0 +1,22 @@
+name: DigitalLibrary CI/CD
+
+on:
+  repository_dispatch:
+    types: [run-digital-library-build]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Build database project
+        run: dotnet build ${{ github.event.client_payload['dacpac-path'] }} --configuration Release
+
+      - name: Deploy database
+        run: |
+          echo "Deploying ${{ github.event.client_payload['db-name'] }}..."
+          # Example: dotnet sql publish or custom deployment scripts
+        env:
+          SA_PASSWORD: ${{ secrets.SA_PASSWORD }}
