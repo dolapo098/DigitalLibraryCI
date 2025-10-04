@@ -10,6 +10,9 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
+        with:
+          repository: ${{ github.event.client_payload['repo-name'] }}
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }} # required for private repos
 
       - name: Build database project
         run: dotnet build ${{ github.event.client_payload['dacpac-path'] }} --configuration Release
@@ -17,6 +20,6 @@ jobs:
       - name: Deploy database
         run: |
           echo "Deploying ${{ github.event.client_payload['db-name'] }}..."
-          # Example: dotnet sql publish or custom deployment scripts
+          # Example: dotnet sql publish
         env:
-          SA_PASSWORD: ${{ secrets.SA_PASSWORD }}
+          SA_PASSWORD: ${{ github.event.client_payload['sa-password'] }}
